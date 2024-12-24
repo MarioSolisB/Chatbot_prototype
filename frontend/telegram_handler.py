@@ -20,11 +20,16 @@ class TelegramMessageHandler:
         })
 
         # Get chatbot response
-        response = self.chatbot.get_response(
-            user_message,
-            self.chat_history[user_id]
-        )
-
-        # Add response to history and send to user
+        response = self.chatbot.get_response(self.chat_history[user_id])
+        
+        # Add response to history
         self.chat_history[user_id].append(response)
-        await message.answer(response["content"], parse_mode="Markdown")
+
+        # Handle tool calls if present
+        if response["tool_calls"]:
+            await message.reply(f"Using tool: {response['tool_calls'].function.name}")
+            # Handle tool response here if needed
+        
+        # Send the text response
+        if response["content"]:
+            await message.reply(response["content"])

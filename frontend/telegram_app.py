@@ -1,30 +1,39 @@
 from aiogram import Bot, Dispatcher, executor, types
 from telegram_handler import TelegramMessageHandler
-from config import TELEGRAM_TOKEN
+from config import TELEGRAM_TOKEN, OPENAI_API_KEY
+import sys
+import os
+
+# Add parent directory to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from chatbot.chatbot_handler import ChatBot
+
 
 
 # Initialize bot
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher(bot)
 
-# Initialize chatbot and handler
-chatbot = {
-    "get_response": lambda msg, 
-    history: {
-        "role": "assistant",
-        "content": "Bot response here"
-        }
-}
+# Initialize ChatBot with configurations
+chatbot = ChatBot(
+    api_key=OPENAI_API_KEY,
+    model="gpt-4",  # or your preferred model
+    prompt="You are a helpful assistant bot on Telegram",
+    some_tools=[]  # Add your tools if needed
+)
 
+# Initialize message handler
 message_handler = TelegramMessageHandler(chatbot)
 
 @dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
-    await message.reply("Chat started!")
+    await message.reply("Welcome! I'm your AI assistant. How can I help you today?")
 
 @dp.message_handler()
 async def handle_message(message: types.Message):
     await message_handler.handle_message(message)
 
 if __name__ == "__main__":
+    print("Bot started...")
     executor.start_polling(dp)
