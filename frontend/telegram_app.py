@@ -9,11 +9,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from chatbot.chatbot_handler import ChatBot
 
-# Initialize bot
+# --- Initialize bot ---
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher(bot)
 
-# Initialize ChatBot with configurations
+# --- Initialize ChatBot with configurations ---
 chatbot = ChatBot(
     api_key=OPENAI_API_KEY,
     model=gpt_model,
@@ -21,7 +21,7 @@ chatbot = ChatBot(
     some_tools=None 
 )
 
-# Initialize message handler
+# --- Initialize message handler ---
 message_handler = TelegramMessageHandler(chatbot)
 
 @dp.message_handler(commands=["start"])
