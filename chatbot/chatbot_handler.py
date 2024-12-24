@@ -1,43 +1,58 @@
 from openai import OpenAI
-import json
 
 class ChatBot:
-    def __init__(self, api_key, model, prompt, some_tools):
+    def __init__(self, api_key, model, prompt, some_tools=None):
         self.client = OpenAI(api_key=api_key)
         self.model = model
         self.prompt = prompt
         self.some_tools = some_tools
 
     def get_response(self, messages):
-        # Prepare messages with system prompt
-        prompt = [
-            {
-                "role": "system",
-                "content": self.prompt
+        try:
+            # Prepare messages with system prompt
+            prompt = [
+                {
+                    "role": "system",
+                    "content": self.prompt
+                }
+            ]
+            prompt.extend(messages)
+
+            # Prepare API call parameters
+            params = {
+                "model": self.model,
+                "messages": prompt,
+                "temperature": 0.1
             }
-        ]
-        prompt.extend(messages)
 
-        # Get response from OpenAI
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=prompt,
-            temperature=0.1,
-            tools=self.some_tools
-        )
+            # Only add tools if they are provided
+            if self.some_tools:
+                params["tools"] = self.some_tools
 
-        # Initialize tool_calls
-        tool_calls = None
+            # Get response from OpenAI
+            response = self.client.chat.completions.create(**params)
 
-        # Check for tool calls in response
-        if response.choices[0].message.tool_calls:
-            tool_calls = response.choices[0].message.tool_calls[0]
+            # Get the message from the response
+            message = response.choices[0].message
 
-        # Create assistant message
-        assistant_message = {
-            "role": "assistant",
-            "content": response.choices[0].message.content,
-            "tool_calls": tool_calls
-        }
-            
-        return assistant_message
+            # Create assistant message
+            assistant_message = {
+                "role": "assistant",
+                "content": message.content if message.content else "",
+            }
+
+            # Add tool_calls only if they exist
+            if hasattr(message, 'tool_calls') and message.tool_calls:
+                assistant_message["tool_calls"] = message.tool_calls[0]
+            else:
+                assistant_message["tool_calls"] = None
+
+            return assistant_message
+
+        except Exception as e:
+            print(f"Error in ChatBot: {e}")
+            return {
+                "role": "assistant",
+                "content": "I encountered an error processing your message.",
+                "tool_calls": None
+            }

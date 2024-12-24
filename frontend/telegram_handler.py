@@ -19,17 +19,24 @@ class TelegramMessageHandler:
             "content": user_message
         })
 
-        # Get chatbot response
-        response = self.chatbot.get_response(self.chat_history[user_id])
-        
-        # Add response to history
-        self.chat_history[user_id].append(response)
+        try:
+            # Get chatbot response
+            response = self.chatbot.get_response(self.chat_history[user_id])
+            
+            # Add bot response to history
+            if response:
+                self.chat_history[user_id].append(response)
+                
+                # Handle the response content
+                if response.get("content"):
+                    await message.reply(response["content"])
+                
+                # Handle tool calls if present
+                if response.get("tool_calls"):
+                    tool_name = response["tool_calls"].function.name
+                    await message.reply(f"Using tool: {tool_name}")
+                    # Add tool handling logic here if needed
 
-        # Handle tool calls if present
-        if response["tool_calls"]:
-            await message.reply(f"Using tool: {response['tool_calls'].function.name}")
-            # Handle tool response here if needed
-        
-        # Send the text response
-        if response["content"]:
-            await message.reply(response["content"])
+        except Exception as e:
+            print(f"Error processing message: {e}")
+            await message.reply("Sorry, I encountered an error processing your message.")
