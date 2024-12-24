@@ -1,6 +1,7 @@
 from aiogram import Bot, Dispatcher, executor, types
 from telegram_handler import TelegramMessageHandler
 from config import TELEGRAM_TOKEN, OPENAI_API_KEY, gpt_model
+
 import sys
 import os
 
@@ -8,6 +9,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from chatbot.chatbot_handler import ChatBot
+from chatbot.prompt import system_prompt
 
 # --- Initialize bot ---
 bot = Bot(token=TELEGRAM_TOKEN)
@@ -17,7 +19,7 @@ dp = Dispatcher(bot)
 chatbot = ChatBot(
     api_key=OPENAI_API_KEY,
     model=gpt_model,
-    prompt="You are a helpful assistant bot on Telegram",
+    prompt=system_prompt,
     some_tools=None 
 )
 
