@@ -1,4 +1,9 @@
 .json
 .env
-data/
+.vscode
 env_chatbot_prototype/
+
+
+
+data/
+
