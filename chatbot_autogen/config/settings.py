@@ -16,6 +16,9 @@ TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 # --- GPT model ----
 GPT_MODEL = "gpt-4o-mini" #"gpt-4o"
 
+# --- Temperature ---
+TEMPERATURE = 0.1
+
 # --- Agent Names ---
 REAL_ESTATE_AGENT_NAME = "NEXUS_Agent"
 USER_PROXY_NAME = "Client"

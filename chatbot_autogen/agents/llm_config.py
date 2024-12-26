@@ -1,6 +1,6 @@
 from typing import List, Dict
 import autogen
-from config.settings import GPT_MODEL, OPENAI_API_KEY
+from config.settings import GPT_MODEL, TEMPERATURE, OPENAI_API_KEY
 
 def create_llm_config(tools: List[Dict] = None) -> Dict:
     config = {
@@ -8,7 +8,7 @@ def create_llm_config(tools: List[Dict] = None) -> Dict:
             "model": GPT_MODEL,
             "api_key": OPENAI_API_KEY
         }],
-        "temperature": 0.1
+        "temperature": TEMPERATURE
     }
     
     if tools:
