@@ -29,7 +29,7 @@ class TelegramMessageHandler:
                 
                 # Handle the response content
                 if response.get("content"):
-                    await message.reply(response["content"])
+                    await message.reply(response["content"], parse_mode="Markdown")
                 
                 # Handle tool calls if present
                 if response.get("tool_calls"):
