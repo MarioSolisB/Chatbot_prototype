@@ -14,7 +14,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 
 # --- GPT model ----
-gpt_model = "gpt-4o-mini" #"gpt-4o"
+GPT_MODEL = "gpt-4o-mini" #"gpt-4o"
 
 # --- Agent Names ---
 REAL_ESTATE_AGENT_NAME = "NEXUS_Agent"
