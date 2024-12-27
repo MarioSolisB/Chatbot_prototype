@@ -1,29 +1,29 @@
 schema = {
-    "name": "schedule_calendar_visit",
+    "name": "schedule_visit",
     "description": "Agenda una visita en el calendario de Google.",
     "parameters": {
         "type": "object",
         "properties": {
-            "summary": {
-                "type": "string",
-                "description": "Resumen o título del evento para la visita."
+            "date": {
+                "type": "string", 
+                "description": "Día de la visita (YYYY-MM-DD)"
             },
-            "start_time": {
+            "time": {
                 "type": "string",
-                "description": "Hora de inicio para la visita (formato: YYYY-MM-DDTHH:MM:SS)."
+                "description": "Hour of the visit (format: HH:MM)."
             },
-            "end_time": {
+            "email":{
                 "type": "string",
-                "description": "Hora de fin para la visita (formato: YYYY-MM-DDTHH:MM:SS)."
+                "description": "Correo del asistente (attendees)"
             },
-            "timezone": {
-                "type": "string",
-                "description": "Zona horaria para el evento (por defecto: 'America/Argentina/Buenos_Aires')."
-            }
         },
-        "required": ["summary", "start_time", "end_time"]
+        "required": ["date", "time", "email"]
     }
 }
+
+def schedule_visit(date, time, email):
+
+    return 
 
 
 schedule_visit_tool = {
