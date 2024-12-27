@@ -2,6 +2,9 @@
 .env
 .vscode/
 .cache/
+
+.ipynb
+
 __pycache__ 
 env_chatbot_prototype/
 
