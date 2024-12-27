@@ -1,6 +1,7 @@
 .json
 .env
 .vscode/
+__pycache__ 
 env_chatbot_prototype/
 
 
