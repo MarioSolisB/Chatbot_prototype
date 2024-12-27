@@ -8,8 +8,8 @@ import os
 # Add parent directory to Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from chatbot.chatbot_handler import ChatBot
-from chatbot.prompt import system_prompt
+from chatbot_graph.chabot.chatbot_handler import ChatBot
+from chatbot_graph.chabot.prompt import system_prompt
 
 # --- Initialize bot ---
 bot = Bot(token=TELEGRAM_TOKEN)
