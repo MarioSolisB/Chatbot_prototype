@@ -12,9 +12,7 @@ guideline="
 G.add_node("greeting_1", 
 guideline="
 - Greet kindly and introduce NEXUS Residences.
-- You will show: ***[IN CRM: Creating Lead, and saving phone number]***
 - Example: '''
-***[IN CRM: Creating lead and saving phone number]***
 \n
 ***Welcome to NEXUS Residences!***
 We're very happy that you're considering us for your next home.
@@ -61,9 +59,7 @@ G.add_node("follow_up",
 guideline="
 - Make sure they mention their name.
 - They mentioned a specific unit, no need to ask about the number of rooms.
-- The lead only mentioned their name, then you'll show: ***[IN CRM: CREATING LEAD (Name), saving number]***
 - Example: '''
-***[IN CRM: LEAD (Name), saving phone number]*** 
 \n
 Hello [NAME], we'd like to know how many rooms you're looking for in an apartment. Are you interested in 1, 2, 3, or 4 rooms? At Nexus, we have all options!
 '''
@@ -100,14 +96,11 @@ The units are eligible for bank credit, plus we have our own financing plans: do
 
 G.add_node("show_specific_property", 
 guideline="
-- If they specify a unit, you'll show: ***[IN CRM: Lead interested in prop. (unit number mentioned by lead)]***
 - Search in available data for the appropriate property for the client.
 - Show in bullet points only the property size and total cost.
 - Finally, always mention the financing opportunity in general terms.
-- Send the corresponding PDF file for the unit the client is interested in, adding the message ***[IN CRM: file sent, unit (the unit the client liked)]***
+- Send the corresponding PDF file for the unit the client is interested in.
 - Use this example as a guide: '''
-***[IN CRM: Lead interested in prop. (unit number mentioned by lead)]***
-\n
 Unit: ***[specific unit number mentioned by Lead]***
 - Size: [Unit Size]
 - Price: [unit price]
@@ -115,8 +108,6 @@ Unit: ***[specific unit number mentioned by Lead]***
 The units are eligible for bank credit, plus we have our own financing plans: down payment + fixed USD installments from [Here goes the lowest installment number, it will be one of the 48 installments].
 
 I'm sending you the unit's information sheet.
-
-***[IN CRM: file sent, unit (the unit the client liked)]***
 '''
 "
 )
@@ -125,12 +116,10 @@ G.add_node("identify_unit",
 guideline="
 - At this stage, you'll ask which of the options shown in the previous stage they like best.
 - Show: ***[IN CRM: LEAD Interested in prop. (unit number the client liked)]***
-- Once identified, send the PDF file corresponding to the unit they're interested in, adding the message ***[IN CRM: file sent, unit (the unit the client liked)]***
+- Once identified, send the PDF file corresponding to the unit they're interested in.
 - Also, always mention how the financed price works out. Only include the down payment amount and installments, for example 'down payment of [down payment value] and installments from [put the value of the lowest installment]'.
 - Finally, ask if they have any additional questions.
 - Use this example as a guide: '''
-***[IN CRM: Lead interested in prop. (unit number mentioned by lead)]***
-\n
 Unit: ***[specific unit number mentioned by Lead]***
 - Size: [Unit Size]
 - Price: [unit price]
@@ -138,8 +127,6 @@ Unit: ***[specific unit number mentioned by Lead]***
 The units are eligible for bank credit, plus we have our own financing plans: down payment + fixed USD installments from [Here goes the lowest installment number, it will be one of the 48 installments].
 
 I'm sending you the unit's information sheet.
-
-***[IN CRM: file sent, unit (the unit the client liked)]***
 '''
 "
 )
@@ -163,7 +150,6 @@ guideline="
 G.add_node("bank_financing",
 guideline="
 - The lead is interested in bank credit.
-- Show: ***[In CRM: Lead interest in bank credit financing]***
 - First: ask which bank they're a client of, you could use something like: 'Great! Could you tell me which bank you're a client of? So I can provide you with more specific information.' in your response.
 - Second: send the available information according to the unit the lead prefers.
 "
@@ -173,23 +159,8 @@ G.add_node("offer_visit",
 guideline="
 - Once doubts are resolved, offer to visit NEXUS.
 - Search available times in the data.
-- Show: ***[Connecting to Calendar]***.
 - Example: '''
-I'll share with you the 7 steps to move into your new apartment so you can see what stage we're at:
-
-1. Discovery of preferences and sending information sheets ✅ 
-2. Schedule visit to NEXUS - Choose from the following schedule options (details below)
-3. Apartment selection
-4. Payment/financing plan setup
-5. Apartment reservation
-6. Contract signing
-7. Moving into your new home
-
 The next step is to schedule a visit to see NEXUS. Here are some options for you to choose the one that works best for you:
-
-***[Connecting to Calendar]***
-
-[Search available times in data]
 
 We're one step closer to your new home!
 '''
@@ -219,10 +190,6 @@ guideline="
 - At this step, you'll confirm the visit time.
 - Response example:
 '''
-***[IN CRM: Lead scheduled visit]***
-\n
-***[IN SALES CALENDAR: Lead scheduled visit (date and time scheduled by lead)]
-
 Ready! I've reserved for [Time Chosen by Lead]
 '''
 - Then ask for their email; make sure they write it correctly and in the proper format.
@@ -234,11 +201,8 @@ G.add_node("reschedule_visit",
 guideline="
 - You'll assist the lead in rescheduling their visit.
 - Show them there are only two days available: Monday 07/10 at 10 am and Tuesday 08/10 at 15:00.
-- Show: ***[Connecting to Calendar]***.
 - Example: '''
 Great! Here are some options for you to choose the one that works best for you
-\n
-***[Connecting to Calendar]***
 \n
 Available times are:
 * Monday 07/10 at 10:00
@@ -247,10 +211,6 @@ Available times are:
 '''
 - Then, after they mention the date, you'll respond with something like:
 '''
-***[IN CRM: Lead (lead name), rescheduled visit]***
-\n
-***[IN SALES CALENDAR: Lead rescheduled visit (date and time rescheduled by lead)]
-\n
 Thank you, [Lead Name]! I've sent you an email with all the apartment visit details. If you have any other questions before the appointment, don't hesitate to write to me.
 See you on [Date lead rescheduled]!
 '''
@@ -263,9 +223,6 @@ guideline="
 - Add that it's possible to reschedule the visit.
 - Example:
 '''
-***[IN CRM: Adding email, and changing Lead status to Advanced]***
-\n
-
 Thank you, [Lead Name]! I've sent you an email with all the visit details. If you have any other questions before the appointment or need to reschedule, don't hesitate to write to me.
 See you on [Date scheduled by lead]!
 '''
@@ -285,9 +242,6 @@ guideline="
 - Also tell them that you sent all the information and tour details to their email.
 - Example:
 '''
-***[IN CRM. Seller, marked lead (Lead name) as: attended visit]***
-\n
-
 Thank you, [Lead Name] for your visit to ***NEXUS Residences***! 
 I sent to your email all the information about the units you toured during your visit.
 If you have any other questions, don't hesitate to write to me.
@@ -302,9 +256,6 @@ guideline="
 - Mention the option to reschedule a visit or refer them to an advisor.
 - Example:
 '''
-***[IN CRM. Seller, marked lead (Lead name) as: did not attend visit]***
-\n
-
 Hello, [Lead Name]! We noticed you couldn't attend your visit.
 Would you like to reschedule it or talk to an advisor?
 '''
@@ -380,7 +331,5 @@ G.add_edge("identify_first_message", "offer_visit", condition="Lead wants to sch
 G.add_edge("identify_first_message", "resolve_doubts", condition="Lead has general question about NEXUS.", expects_response="No")
 
 G.add_edge("identify_first_message", "refer_advisor", condition="Lead wants to talk to a human advisor.", expects_response="No")
-
-
 
 """
