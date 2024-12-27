@@ -1,4 +1,4 @@
-from chatbot_graph.chabot.flow_graph import flow_graph
+from chatbot_graph.flow_graph import flow_graph
 
 #---------------------------------------------
 # --- System prompt ---
