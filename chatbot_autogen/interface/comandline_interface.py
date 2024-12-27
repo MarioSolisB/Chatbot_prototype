@@ -2,13 +2,15 @@
 
 import time
 from termcolor import colored
-from config.settings import CLEAR_COMMAND, EXIT_COMMAND
-from utils.formatting import clear_screen, format_welcome_message, format_user_prompt
+from chatbot_autogen.config.settings import CLEAR_COMMAND, EXIT_COMMAND
+from chatbot_autogen.utils.formatting import clear_screen, format_welcome_message, format_user_prompt
 
-class ChatInterface: 
+class ChatInterface:
     def __init__(self, user_proxy, real_estate_agent):
+
         self.user_proxy = user_proxy
         self.real_estate_agent = real_estate_agent
+        self.chat_active = False
 
     def display_welcome(self):
         clear_screen()
@@ -16,23 +18,16 @@ class ChatInterface:
 
     def start(self):
         self.display_welcome()
+        self.chat_active = True
 
         try:
-            while True:
-                user_input = input(format_user_prompt())
-
-                if user_input.lower() == EXIT_COMMAND:
-                    print(colored("\nThank you for using NEXUS Residence chat system. Goodbye!", "cyan"))
-                    break
-                elif user_input.lower() == CLEAR_COMMAND:
-                    clear_screen()
-                    continue
-
-                chat_result = self.user_proxy.initiate_chat(
-                    self.real_estate_agent,
-                    message=user_input,
-                )
-                time.sleep(0.5)
+            # Initial message to start the conversation
+            initial_message = "hi"
+            chat_result = self.user_proxy.initiate_chat(
+                self.real_estate_agent,
+                message=initial_message,
+                silent=True  # Prevent duplicate message printing
+            )
 
         except KeyboardInterrupt:
             print(colored("\n\nChat session terminated by user.", "yellow"))
@@ -40,3 +35,4 @@ class ChatInterface:
             print(colored(f"\nAn error occurred: {str(e)}", "red"))
         finally:
             print(colored("\nChat session ended.", "cyan"))
+            self.chat_active = False

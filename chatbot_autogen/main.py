@@ -1,9 +1,14 @@
-"""Main entry point for the real estate chatbot."""
-
+import sys
 import os
-from agents.real_estate import create_real_estate_agent
-from agents.user_proxy import create_user_proxy
-from interface.comandline_interface import ChatInterface
+
+# Add parent directory to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from chatbot_autogen.agents.real_estate import create_real_estate_agent
+from chatbot_autogen.agents.user_proxy import create_user_proxy
+from chatbot_autogen.interface.comandline_interface import ChatInterface
+
+
 
 def main():
     # Get API key if not set in environment

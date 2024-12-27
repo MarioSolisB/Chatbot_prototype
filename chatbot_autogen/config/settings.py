@@ -27,4 +27,8 @@ USER_PROXY_NAME = "Client"
 CLEAR_COMMAND = "clear"
 EXIT_COMMAND = "exit"
 
-SLEEP_TIME_BETWEEN_RETRIEVALS = 1
+# --- Conversation Settings ---
+MAX_CONSECUTIVE_AUTO_REPLIES = 1  # Limit consecutive auto-replies
+REPLY_WAIT_TIME = 0.5  # Time to wait between replies
+
+#SLEEP_TIME_BETWEEN_RETRIEVALS = 1
