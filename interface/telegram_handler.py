@@ -30,12 +30,6 @@ class TelegramMessageHandler:
                 # Handle the response content
                 if response.get("content"):
                     await message.reply(response["content"], parse_mode="Markdown")
-                
-                # Handle tool calls if present
-                if response.get("tool_calls"):
-                    tool_name = response["tool_calls"].function.name
-                    await message.reply(f"Using tool: {tool_name}")
-                    # Add tool handling logic here if needed
 
         except Exception as e:
             print(f"Error processing message: {e}")

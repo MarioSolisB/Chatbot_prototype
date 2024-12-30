@@ -1,58 +1,121 @@
 from openai import OpenAI
+import json
 
 class ChatBot:
-    def __init__(self, api_key, model, prompt, some_tools=None):
+    def __init__(self, api_key, gpt_model, system_prompt):
         self.client = OpenAI(api_key=api_key)
-        self.model = model
-        self.prompt = prompt
-        self.some_tools = some_tools
+        self.gpt_model = gpt_model
+        self.system_prompt = system_prompt
+        self.messages = []
 
-    def get_response(self, messages):
-        try:
-            # Prepare messages with system prompt
-            prompt = [
-                {
-                    "role": "system",
-                    "content": self.prompt
+    def get_response(self, user_input):
+        
+        self.messages = [
+            {
+                "role": "system",
+                "content": self.system_prompt
                 }
-            ]
-            prompt.extend(messages)
+        ]
 
-            # Prepare API call parameters
-            params = {
-                "model": self.model,
-                "messages": prompt,
-                "temperature": 0.1
+        user_messages = {
+            "role": "user",
+            "content": user_input
+        }
+
+        self.messages.append(user_messages)
+
+        parameters = {
+            "model": self.gpt_model,
+            "messages": self.messages,
+            "temperature": 0.1,
+            #"tools": tools,
+            #"tool_choice": "auto",
+            } 
+
+        response = self.client.chat.completions.create(**parameters)     
+
+        assistant_message = response.choices[0].message.content
+        tool_calls_action = response.choices[0].finish_reason
+        tool_calls = response.choices[0].message.tool_calls
+
+        if tool_calls_action == "stop":
+            tool_calls_action = False
+        else:
+            tool_calls_action = True
+        
+        return self.messages, assistant_message, tool_calls_action, tool_calls
+
+    def process_tool_calls(self, user_input, messages, assistant_message, tool_calls):
+        function_handlers = {
+              #"get_current_weather": get_current_weather, # change to a my list of tools
+              #"get_stock_price": get_stock_price,        
+              #"analyze_sentiment": analyze_sentiment,
+              # Add more functions here as needed
+          }
+
+        tool_calls_dict = [
+            {
+                "id": tool_call.id,
+                "type": tool_call.type,
+                "function": {
+                    "name": tool_call.function.name,
+                    "arguments": tool_call.function.arguments
+                }
             }
+            for tool_call in tool_calls
+        ]
 
-            # Only add tools if they are provided
-            if self.some_tools:
-                params["tools"] = self.some_tools
+        assistant_message = {
+            "role": "assistant",
+            "content": assistant_message, # None or null
+            "tool_calls": tool_calls_dict
+        }
 
-            # Get response from OpenAI
-            response = self.client.chat.completions.create(**params)
+        messages.append(assistant_message)
 
-            # Get the message from the response
-            message = response.choices[0].message
+        for tool_call in tool_calls:
+            function_name = tool_call.function.name
+            # ---- Log control of Calling function ---
+            print(f"********Calling function: {function_name}********")
+            
+            function_args = json.loads(tool_call.function.arguments)
+            
 
-            # Create assistant message
-            assistant_message = {
-                "role": "assistant",
-                "content": message.content if message.content else "",
+            # Get the appropriate function handler
+            handler = function_handlers.get(function_name)
+
+            function_response = handler(**function_args)
+            # --- Log control of function response ----
+            print(f"Function response: {function_response}")
+            tool_response = {
+                "tool_call_id": tool_call.id,
+                "role": "tool",
+                "name": function_name,
+                "content": function_response,
             }
+            
+            messages.append(tool_response)
+            # --- Log control of messages ----
+            print(f"Adding to messages: {json.dumps(messages, indent=2)}")
 
-            # Add tool_calls only if they exist
-            if hasattr(message, 'tool_calls') and message.tool_calls:
-                assistant_message["tool_calls"] = message.tool_calls[0]
-            else:
-                assistant_message["tool_calls"] = None
+        function_enriched_response = self.client.chat.completions.create(model=self.gpt_model, messages=messages)
 
-            return assistant_message
+        assistant_message_enriched = function_enriched_response.choices[0].message.content
+        tool_calls_action_enriched = function_enriched_response.choices[0].finish_reason
+        tool_calls_enriched = function_enriched_response.choices[0].message.tool_calls
 
-        except Exception as e:
-            print(f"Error in ChatBot: {e}")
-            return {
-                "role": "assistant",
-                "content": "I encountered an error processing your message.",
-                "tool_calls": None
-            }
+        if tool_calls_action_enriched == "stop":
+            tool_calls_action_enriched = False
+        else:
+            tool_calls_action_enriched = True
+        
+        return messages, assistant_message_enriched, tool_calls_action_enriched, tool_calls_enriched
+    
+
+    def get_response_final(self, user_input):
+        messages, assistant_message, tool_calls_action, tool_calls  = self.get_response(user_input)
+
+        if tool_calls_action == False:
+            return self.get_response(user_input)
+        else:
+            return self.process_tool_calls(user_input, messages, assistant_message, tool_calls)

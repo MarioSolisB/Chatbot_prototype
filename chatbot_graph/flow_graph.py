@@ -69,14 +69,11 @@ Hello [NAME], we'd like to know how many rooms you're looking for in an apartmen
 G.add_node("show_property", 
 guideline="
 - The lead mentioned their name and room preference or a specific unit.
-- You'll show: ***[IN CRM: LEAD Interested in prop. of (number) rooms]***
 - Search in available data for the appropriate property for the client.
 - Show, in bullet points only the property size and total cost.
 - Always send the corresponding PDF brochure for all NEXUS found in the data. Use the necessary tool for this.
 - Finally, always mention the financing opportunity in general terms.
 - Use this example as a guide: '''
-***[IN CRM: LEAD Interested in prop. of (number) rooms]***
-\n
 Unit: ***[unit number]***
 - Size: [Unit Size]
 - Price: [unit price]
@@ -115,7 +112,6 @@ I'm sending you the unit's information sheet.
 G.add_node("identify_unit", 
 guideline="
 - At this stage, you'll ask which of the options shown in the previous stage they like best.
-- Show: ***[IN CRM: LEAD Interested in prop. (unit number the client liked)]***
 - Once identified, send the PDF file corresponding to the unit they're interested in.
 - Also, always mention how the financed price works out. Only include the down payment amount and installments, for example 'down payment of [down payment value] and installments from [put the value of the lowest installment]'.
 - Finally, ask if they have any additional questions.
@@ -142,7 +138,6 @@ guideline="
 G.add_node("nexus_financing",
 guideline="
 - The lead is interested in bank credit.
-- Show: ***[In CRM: Lead interest in NEXUS financing]***
 - Then, send only the available information about NEXUS financing according to the unit the lead prefers.
 "
 )

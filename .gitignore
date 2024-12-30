@@ -3,7 +3,9 @@
 .vscode/
 .cache/
 
-.ipynb
+
+chatbot_graph/integrations/googlecalendar/pruebas.ipynb
+chatbot_graph/pruebas.ipynb
 
 __pycache__ 
 env_chatbot_prototype/
