@@ -20,3 +20,6 @@ chatbot_graph/integrations/googlecalendar/token.json
 
 chatbot_graph/data/
 chatbot_autogen/
+
+
+backend/data_chat_history/

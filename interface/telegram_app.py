@@ -17,9 +17,22 @@ from chatbot_graph.prompt import system_prompt
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher(bot)
 
-#system_prompt ="You are a helpful assistant that can access external functions. The responses from these function calls will be appended to this dialogue. Please provide responses based on the information from these function calls."
 
 chatbot = ChatBot(OPENAI_API_KEY,gpt_model,system_prompt)
+
+
+# Function to load chat history
+def load_chat_history():
+    try:
+        with open('backend/chat_history/chat_history.json', 'r') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+# Function to save chat history
+def save_chat_history(chat_history):
+    with open('backend/chat_history/chat_history.json', 'w', encoding='utf-8') as f:
+        json.dump(chat_history, f, ensure_ascii=False, indent=2)
 
 
 @dp.message_handler(commands=["start"])
@@ -53,6 +66,9 @@ async def handle_messages(message:types.Message):
     }
 
     chat_history[user_id].append(assistant_response)
+
+    save_chat_history(chat_history)
+
     # --- Control log of chat history ---    
     print(f"""
 ************************* LOGS TELEGRAM ***************************************

@@ -50,11 +50,12 @@ class ChatBot:
 
     def process_tool_calls(self, messages, assistant_message, tool_calls):
         function_handlers = {
-              "get_current_weather": get_current_weather, # change to a my list of tools
-              #"get_stock_price": get_stock_price,        
-              #"analyze_sentiment": analyze_sentiment,
-              # Add more functions here as needed
-          }
+            "schedule_visit": schedule_visit,
+            #"get_current_weather": get_current_weather, # change to a my list of tools
+            #"get_stock_price": get_stock_price,        
+            #"analyze_sentiment": analyze_sentiment,
+            # Add more functions here as needed
+            }
 
         tool_calls_dict = [
             {
