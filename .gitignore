@@ -14,6 +14,9 @@ __pycache__
 env_chatbot_prototype/
 
 
+chatbot_graph/integrations/googlecalendar/client.json
+chatbot_graph/integrations/googlecalendar/token.json
+
 
 chatbot_graph/data/
 chatbot_autogen/
