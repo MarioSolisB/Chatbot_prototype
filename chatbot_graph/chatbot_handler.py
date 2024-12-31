@@ -1,21 +1,23 @@
 from openai import OpenAI
 import json
 
+from chatbot_graph.tools.tools import TOOLS
+from chatbot_graph.tools.schedule_visit.schedule_visit import schedule_visit
+from chatbot_graph.tools.getcurrentweather.getcurrentweather import get_current_weather
+
 class ChatBot:
     def __init__(self, api_key, gpt_model, system_prompt):
         self.client = OpenAI(api_key=api_key)
         self.gpt_model = gpt_model
         self.system_prompt = system_prompt
-        self.messages = []
-
-    def get_response(self, user_input):
-        
         self.messages = [
             {
                 "role": "system",
                 "content": self.system_prompt
                 }
         ]
+
+    def get_response(self, user_input): 
 
         user_messages = {
             "role": "user",
@@ -28,8 +30,8 @@ class ChatBot:
             "model": self.gpt_model,
             "messages": self.messages,
             "temperature": 0.1,
-            #"tools": tools,
-            #"tool_choice": "auto",
+            "tools": TOOLS,
+            "tool_choice": "auto",
             } 
 
         response = self.client.chat.completions.create(**parameters)     
@@ -38,6 +40,7 @@ class ChatBot:
         tool_calls_action = response.choices[0].finish_reason
         tool_calls = response.choices[0].message.tool_calls
 
+        
         if tool_calls_action == "stop":
             tool_calls_action = False
         else:
@@ -45,9 +48,9 @@ class ChatBot:
         
         return self.messages, assistant_message, tool_calls_action, tool_calls
 
-    def process_tool_calls(self, user_input, messages, assistant_message, tool_calls):
+    def process_tool_calls(self, messages, assistant_message, tool_calls):
         function_handlers = {
-              #"get_current_weather": get_current_weather, # change to a my list of tools
+              "get_current_weather": get_current_weather, # change to a my list of tools
               #"get_stock_price": get_stock_price,        
               #"analyze_sentiment": analyze_sentiment,
               # Add more functions here as needed
@@ -76,7 +79,11 @@ class ChatBot:
         for tool_call in tool_calls:
             function_name = tool_call.function.name
             # ---- Log control of Calling function ---
-            print(f"********Calling function: {function_name}********")
+            print(f"""
+************************* LOGS CALLING FUNCTION ***************************************
+>>>>> Calling function: {function_name}
+***************************************************************************************
+""")
             
             function_args = json.loads(tool_call.function.arguments)
             
@@ -87,6 +94,7 @@ class ChatBot:
             function_response = handler(**function_args)
             # --- Log control of function response ----
             print(f"Function response: {function_response}")
+            
             tool_response = {
                 "tool_call_id": tool_call.id,
                 "role": "tool",
@@ -95,8 +103,11 @@ class ChatBot:
             }
             
             messages.append(tool_response)
-            # --- Log control of messages ----
-            print(f"Adding to messages: {json.dumps(messages, indent=2)}")
+            print(f"""
+************************* LOGS MESSAGES ***********************************************
+>>>> Adding to messages: {json.dumps(messages, indent=2)}
+***************************************************************************************
+""")
 
         function_enriched_response = self.client.chat.completions.create(model=self.gpt_model, messages=messages)
 
@@ -114,8 +125,13 @@ class ChatBot:
 
     def get_response_final(self, user_input):
         messages, assistant_message, tool_calls_action, tool_calls  = self.get_response(user_input)
-
-        if tool_calls_action == False:
-            return self.get_response(user_input)
+            
+        if tool_calls_action == False: 
+            assistant_message = {
+            "role": "assistant",
+            "content":assistant_message,
+            }
+            messages.append(assistant_message)   
+            return messages, assistant_message, tool_calls_action, tool_calls
         else:
-            return self.process_tool_calls(user_input, messages, assistant_message, tool_calls)
+            return self.process_tool_calls(messages, assistant_message, tool_calls)

@@ -172,8 +172,6 @@ What time are you available for the advisor to contact you?
 - Then, once they respond with a time.
 - Example:
 '''
-***[In Advisor Calendar. Schedule task: Call (Lead name) at (time mentioned by lead in previous step)]***
-\n 
 Thank you, Robert will contact you at (time the lead is available).
 Have a good day!
 '''

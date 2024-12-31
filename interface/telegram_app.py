@@ -1,40 +1,65 @@
 from aiogram import Bot, Dispatcher, executor, types
-from telegram_handler import TelegramMessageHandler
 from config import TELEGRAM_TOKEN, OPENAI_API_KEY, gpt_model
 
 
 import sys
 import os
+import json
 
 # Add parent directory to Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from chatbot_graph.chatbot_handler import ChatBot
 from chatbot_graph.prompt import system_prompt
-from chatbot_graph.tools.tools import TOOLS
 
 
 # --- Initialize bot ---
 bot = Bot(token=TELEGRAM_TOKEN)
 dp = Dispatcher(bot)
 
-# --- Initialize ChatBot with configurations ---
-chatbot = ChatBot(
-    api_key=OPENAI_API_KEY,
-    model=gpt_model,
-    system_prompt=system_prompt,
-)
+#system_prompt ="You are a helpful assistant that can access external functions. The responses from these function calls will be appended to this dialogue. Please provide responses based on the information from these function calls."
 
-# --- Initialize message handler ---
-message_handler = TelegramMessageHandler(chatbot)
+chatbot = ChatBot(OPENAI_API_KEY,gpt_model,system_prompt)
+
 
 @dp.message_handler(commands=["start"])
 async def cmd_start(message: types.Message):
     await message.reply("--- Starting bot ---")
 
+chat_history = {}
+
 @dp.message_handler()
-async def handle_message(message: types.Message):
-    await message_handler.handle_message(message)
+async def handle_messages(message:types.Message):
+    user_id = message.from_user.id
+    user_message = message.text
+
+    # Initialize chat history for new users
+    if user_id not in chat_history:
+        chat_history[user_id] = []
+        
+    # Add user message to history
+    chat_history[user_id].append({
+        "role": "user",
+        "content": user_message
+    })
+    
+    messages, assistant_message, tool_calls_action, tool_calls =  chatbot.get_response_final(user_message) # None, "I printed your chat_history!", False, None 
+
+    assistant_response = {
+        "role": "assistant",
+        "content": assistant_message["content"],
+        "tool_calls_action":tool_calls_action,
+        "tool_calls": tool_calls,
+    }
+
+    chat_history[user_id].append(assistant_response)
+    # --- Control log of chat history ---    
+    print(f"""
+************************* LOGS TELEGRAM ***************************************
+{json.dumps(chat_history, indent=2)}
+*******************************************************************************
+""")
+    await message.reply(assistant_message["content"], parse_mode="Markdown")
 
 if __name__ == "__main__":
     print("Bot started...")

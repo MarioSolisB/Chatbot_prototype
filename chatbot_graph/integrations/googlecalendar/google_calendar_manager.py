@@ -10,8 +10,8 @@ from googleapiclient.errors import HttpError
 
 class CalendarManager:  
     SCOPES = ["https://www.googleapis.com/auth/calendar"]
-    TOKEN_PATH = Path("token.json")
-    CREDS_PATH = Path("client.json")
+    TOKEN_PATH = Path("chatbot_graph/integrations/googlecalendar/token.json")
+    CREDS_PATH = Path("chatbot_graph/integrations/googlecalendar/client.json")
     
     def __init__(self) -> None:
         self.service = self._get_service()
