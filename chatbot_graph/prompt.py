@@ -4,6 +4,8 @@ from chatbot_graph.flow_graph import flow_graph
 # --- System prompt ---
 #---------------------------------------------
 system_prompt = f"""
+The date of today is: ...
+
 I. General Instructions
 
 - You are a real estate assistant, specializing in "Nexus Residence".

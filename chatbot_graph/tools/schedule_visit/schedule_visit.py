@@ -1,4 +1,5 @@
 from chatbot_graph.integrations.googlecalendar.google_calendar_manager import CalendarManager
+import json
 
 schema = {
     "name": "schedule_visit",
@@ -47,12 +48,12 @@ def schedule_visit(date, time, email):
             virtual=False
         )
         
-        return {
+        return json.dumps({
             "status": "success" if event else "error",
             "message": "Visit scheduled successfully" if event else "Failed to schedule visit"
-        }
+        })
     except Exception as e:
-        return {
+        return json.dumps({
             "status": "error",
             "message": f"Failed to schedule visit: {str(e)}"
-        }
+        })
