@@ -21,17 +21,17 @@ dp = Dispatcher(bot)
 chatbot = ChatBot(OPENAI_API_KEY,gpt_model,system_prompt)
 
 
-# Function to load chat history
+# # Function to load chat history
 def load_chat_history():
     try:
-        with open('backend/chat_history/chat_history.json', 'r') as f:
+        with open('backend/data_chat_history/chat_history.json', 'r') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
 # Function to save chat history
 def save_chat_history(chat_history):
-    with open('backend/chat_history/chat_history.json', 'w', encoding='utf-8') as f:
+    with open('backend/data_chat_history/chat_history.json', 'w', encoding='utf-8') as f:
         json.dump(chat_history, f, ensure_ascii=False, indent=2)
 
 

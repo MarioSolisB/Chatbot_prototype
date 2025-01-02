@@ -1,23 +1,37 @@
 from openai import OpenAI
 import json
+from datetime import datetime
+import pytz
 
 from chatbot_graph.tools.tools import TOOLS
 from chatbot_graph.tools.schedule_visit.schedule_visit import schedule_visit
 from chatbot_graph.tools.getcurrentweather.getcurrentweather import get_current_weather
 
 class ChatBot:
-    def __init__(self, api_key, gpt_model, system_prompt):
+    def __init__(self, api_key, gpt_model, base_system_prompt):
         self.client = OpenAI(api_key=api_key)
         self.gpt_model = gpt_model
-        self.system_prompt = system_prompt
+        self.base_system_prompt = base_system_prompt
         self.messages = [
             {
                 "role": "system",
-                "content": self.system_prompt
-                }
+                "content": self._get_system_prompt()
+            }
         ]
 
+    def _get_system_prompt(self):
+        buenos_aires_tz = pytz.timezone('America/Argentina/Buenos_Aires')
+        current_time = datetime.now(buenos_aires_tz)
+        formatted_datetime = current_time.strftime('%B %d, %Y, %I:%M:%S %p %Z')
+        
+        return f"""
+        {self.base_system_prompt}
+        
+        Current timestamp: {formatted_datetime} (Buenos Aires Time)
+        """
+
     def get_response(self, user_input): 
+        
 
         user_messages = {
             "role": "user",
