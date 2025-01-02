@@ -29,10 +29,10 @@ schedule_visit_tool = {
     "function": schema,
 }
 
+calendar = CalendarManager()
+
 def schedule_visit(date, time, email):
     try:
-        calendar = CalendarManager()
-        
         start_time = f"{date}T{time}:00"
         end_time = f"{date}T{int(time.split(':')[0])+1}:{time.split(':')[1]}:00"
         timezone = "America/Argentina/Buenos_Aires"

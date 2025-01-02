@@ -25,6 +25,9 @@ The conversation flow is defined by a graph with the following components:
 The conversation ALWAYS starts at the node :"identify_first_message".
 </Conversation flow>
 {flow_graph}
-</Conversation flow>
+</Conversation 
 
+II. Tools use
+- You have some tools that you may use in the conversation with the user: get_available_slots, schedule_visit.
+- 
 """

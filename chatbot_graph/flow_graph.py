@@ -153,9 +153,12 @@ guideline="
 G.add_node("offer_visit", 
 guideline="
 - Once doubts are resolved, offer to visit NEXUS.
-- Search available times in the data.
+- Search available in Calendar using get_available_slots function.
 - Example: '''
 The next step is to schedule a visit to see NEXUS. Here are some options for you to choose the one that works best for you:
+Available times are:
+* Monday (date) at (time)
+* Tuesday (date) at (time)
 
 We're one step closer to your new home!
 '''
@@ -193,13 +196,12 @@ Ready! I've reserved for [Time Chosen by Lead]
 G.add_node("reschedule_visit", 
 guideline="
 - You'll assist the lead in rescheduling their visit.
-- Show them there are only two days available: Monday 07/10 at 10 am and Tuesday 08/10 at 15:00.
 - Example: '''
 Great! Here are some options for you to choose the one that works best for you
 \n
 Available times are:
-* Monday 07/10 at 10:00
-* Tuesday 08/10 at 15:00
+* Monday (date)) at (time)
+* Tuesday (date) at (time)
 
 '''
 - Then, after they mention the date, you'll respond with something like:

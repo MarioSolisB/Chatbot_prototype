@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Optional
+from zoneinfo import ZoneInfo
 
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -32,6 +33,78 @@ class CalendarManager:
             self.TOKEN_PATH.write_text(creds.to_json())
 
         return build("calendar", "v3", credentials=creds)
+
+    def get_available_slots(self, days: int = 3, slot_duration: int = 60) -> List[Dict]:
+        try:
+            # Get Buenos Aires timezone
+            timezone = ZoneInfo("America/Argentina/Buenos_Aires")
+            now = datetime.now(timezone)
+            
+            # Find start of next working day
+            start_date = now.replace(hour=10, minute=0, second=0, microsecond=0)
+            if now.hour >= 17:  # If current time is past 5 PM, start from next day
+                start_date += timedelta(days=1)
+            
+            available_slots = []
+            days_checked = 0
+            current_date = start_date
+            
+            while days_checked < days:
+                # Skip Sunday
+                if current_date.weekday() == 6:  # Sunday
+                    current_date += timedelta(days=1)
+                    continue
+                
+                # Get busy periods for the current day
+                day_end = current_date.replace(hour=17, minute=0)
+                
+                events = self.service.events().list(
+                    calendarId='primary',
+                    timeMin=current_date.isoformat(),
+                    timeMax=day_end.isoformat(),
+                    singleEvents=True,
+                    orderBy='startTime'
+                ).execute().get('items', [])
+                
+                # Convert events to busy periods
+                busy_periods = []
+                for event in events:
+                    start = datetime.fromisoformat(event['start'].get('dateTime', event['start'].get('date')))
+                    end = datetime.fromisoformat(event['end'].get('dateTime', event['end'].get('date')))
+                    busy_periods.append((start, end))
+                
+                # Find available slots
+                current_slot = current_date
+                while current_slot + timedelta(minutes=slot_duration) <= day_end:
+                    slot_end = current_slot + timedelta(minutes=slot_duration)
+                    is_available = True
+                    
+                    # Check if slot overlaps with any busy period
+                    for busy_start, busy_end in busy_periods:
+                        if not (slot_end <= busy_start or current_slot >= busy_end):
+                            is_available = False
+                            break
+                    
+                    if is_available and len(available_slots) < 3:
+                        available_slots.append({
+                            "start": current_slot.isoformat(),
+                            "end": slot_end.isoformat(),
+                            "timezone": "America/Argentina/Buenos_Aires"
+                        })
+                        
+                        if len(available_slots) == 3:
+                            return available_slots
+                    
+                    current_slot += timedelta(minutes=slot_duration)
+                
+                current_date = (current_date + timedelta(days=1)).replace(hour=10, minute=0)
+                days_checked += 1
+            
+            return available_slots
+            
+        except Exception as e:
+            print(f"Error getting available slots: {e}")
+            return []                                           
 
     def get_upcoming_events(self, days: int = 5, max_results: int = 10) -> List[Dict]:
         try:

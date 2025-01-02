@@ -5,6 +5,7 @@ import pytz
 
 from chatbot_graph.tools.tools import TOOLS
 from chatbot_graph.tools.schedule_visit.schedule_visit import schedule_visit
+from chatbot_graph.tools.get_available_slots.get_available_slots import get_available_slots
 from chatbot_graph.tools.getcurrentweather.getcurrentweather import get_current_weather
 
 class ChatBot:
@@ -65,6 +66,7 @@ class ChatBot:
     def process_tool_calls(self, messages, assistant_message, tool_calls):
         function_handlers = {
             "schedule_visit": schedule_visit,
+            "get_available_slots": get_available_slots,
             #"get_current_weather": get_current_weather, # change to a my list of tools
             #"get_stock_price": get_stock_price,        
             #"analyze_sentiment": analyze_sentiment,
@@ -118,11 +120,11 @@ class ChatBot:
             }
             
             messages.append(tool_response)
-            print(f"""
-************************* LOGS MESSAGES ***********************************************
->>>> Adding to messages: {json.dumps(messages, indent=2)}
-***************************************************************************************
-""")
+#             print(f"""
+# ************************* LOGS MESSAGES ***********************************************
+# >>>> Adding to messages: {json.dumps(messages, indent=2)}
+# ***************************************************************************************
+# """)
 
         function_enriched_response = self.client.chat.completions.create(model=self.gpt_model, messages=messages)
 
@@ -146,7 +148,15 @@ class ChatBot:
             "role": "assistant",
             "content":assistant_message,
             }
-            messages.append(assistant_message)   
+            messages.append(assistant_message)
+
             return messages, assistant_message, tool_calls_action, tool_calls
         else:
-            return self.process_tool_calls(messages, assistant_message, tool_calls)
+            messages, assistant_message_enriched, tool_calls_action_enriched, tool_calls_enriched = self.process_tool_calls(messages, assistant_message, tool_calls)
+            assistant_message = {
+            "role": "assistant",
+            "content":assistant_message_enriched,
+            }
+            messages.append(assistant_message)
+
+            return messages, assistant_message, tool_calls_action_enriched, tool_calls_enriched
