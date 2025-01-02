@@ -6,6 +6,7 @@
 
 chatbot_graph/integrations/googlecalendar/pruebas.ipynb
 chatbot_graph/pruebas.ipynb
+chatbot_graph/pruebas.py
 interface/pruebas.ipynb
 
 chatbot_graph/tools/getcurrentweather/
