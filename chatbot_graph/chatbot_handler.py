@@ -4,9 +4,9 @@ from datetime import datetime
 import pytz
 
 from chatbot_graph.tools.tools import TOOLS
-from chatbot_graph.tools.schedule_visit.schedule_visit import schedule_visit
+from chatbot_graph.tools.book_visit.book_visit import book_visit
 from chatbot_graph.tools.get_available_slots.get_available_slots import get_available_slots
-from chatbot_graph.tools.getcurrentweather.getcurrentweather import get_current_weather
+#from chatbot_graph.tools.getcurrentweather.getcurrentweather import get_current_weather
 
 class ChatBot:
     def __init__(self, api_key, gpt_model, base_system_prompt):
@@ -65,7 +65,7 @@ class ChatBot:
 
     def process_tool_calls(self, messages, assistant_message, tool_calls):
         function_handlers = {
-            "schedule_visit": schedule_visit,
+            "book_visit": book_visit,
             "get_available_slots": get_available_slots,
             #"get_current_weather": get_current_weather, # change to a my list of tools
             #"get_stock_price": get_stock_price,        
@@ -111,8 +111,8 @@ class ChatBot:
             function_response = handler(**function_args)
             # --- Log control of function response ----
             print(f"""
-************************* LOGS CALLING FUNCTION ***************************************
->>>>> Calling function: {function_response}
+************************* LOGS FUNCTION RESPONSE **************************************
+>>>>> Function response: {function_response}
 ***************************************************************************************
 """)
             
@@ -124,11 +124,11 @@ class ChatBot:
             }
             
             messages.append(tool_response)
-            print(f"""
-************************* LOGS MESSAGES ***********************************************
->>>> Adding to messages: {json.dumps(messages, indent=2)}
-***************************************************************************************
-""")
+#             print(f"""
+# ************************* LOGS MESSAGES ***********************************************
+# >>>> Adding to messages: {json.dumps(messages, indent=2)}
+# ***************************************************************************************
+# """)
 
         function_enriched_response = self.client.chat.completions.create(model=self.gpt_model, messages=messages)
 
@@ -154,11 +154,11 @@ class ChatBot:
             }
             messages.append(assistant_message)
             # Control log of messages
-            print(f"""
-************************* LOGS MESSAGES ***********************************************
->>>> Adding to messages: {json.dumps(messages, indent=2)}
-***************************************************************************************
-""")
+#             print(f"""
+# ************************* LOGS MESSAGES ***********************************************
+# >>>> Adding to messages: {json.dumps(messages, indent=2)}
+# ***************************************************************************************
+# """)
 
             return messages, assistant_message, tool_calls_action, tool_calls
         else:
@@ -169,10 +169,10 @@ class ChatBot:
             }
             messages.append(assistant_message)
             # Control log of messages
-            print(f"""
-************************* LOGS MESSAGES ***********************************************
->>>> Adding to messages: {json.dumps(messages, indent=2)}
-***************************************************************************************
-""")
+#             print(f"""
+# ************************* LOGS MESSAGES ***********************************************
+# >>>> Adding to messages: {json.dumps(messages, indent=2)}
+# ***************************************************************************************
+# """)
 
             return messages, assistant_message, tool_calls_action_enriched, tool_calls_enriched

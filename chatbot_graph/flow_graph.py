@@ -162,6 +162,8 @@ Available times are:
 
 We're one step closer to your new home!
 '''
+- Then you use the function "schedule_visit" to save the appoiment in GoogleCalendar.
+- After that, you continue to the node: "confirm_visit".
 "
 )
 

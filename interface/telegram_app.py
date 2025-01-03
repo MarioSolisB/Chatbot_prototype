@@ -71,12 +71,13 @@ async def handle_messages(message:types.Message):
     save_chat_history(chat_history)
 
     # --- Control log of chat history ---    
-#     print(f"""
-# ************************* LOGS TELEGRAM ***************************************
-# {json.dumps(chat_history, indent=2)}
-# *******************************************************************************
-# """)
-    await message.reply(assistant_message["content"], parse_mode="Markdown")
+    print(f"""
+************************* LOGS TELEGRAM ***************************************
+{json.dumps(chat_history, indent=2)}
+*******************************************************************************
+""")
+    await message.reply(assistant_message["content"]) #, parse_mode="Markdown")
+
 
 if __name__ == "__main__":
     print("Bot started...")

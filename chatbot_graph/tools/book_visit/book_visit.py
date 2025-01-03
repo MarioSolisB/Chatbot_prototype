@@ -2,8 +2,8 @@ from chatbot_graph.integrations.googlecalendar.google_calendar_manager import Ca
 import json
 
 schema = {
-    "name": "schedule_visit",
-    "description": "Schedule a visit in google calendar.",
+    "name": "book_visit",
+    "description": "Book a visit of the user in GoogleCalendar.",
     "parameters": {
         "type": "object",
         "properties": {
@@ -24,14 +24,14 @@ schema = {
     }
 }
 
-schedule_visit_tool = {
+book_visit_tool = {
     "type": "function",
     "function": schema,
 }
 
 calendar = CalendarManager()
 
-def schedule_visit(date, time, email):
+def book_visit(date, time, email):
     try:
         start_time = f"{date}T{time}:00"
         end_time = f"{date}T{int(time.split(':')[0])+1}:{time.split(':')[1]}:00"

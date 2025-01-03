@@ -3,7 +3,7 @@ import json
 
 schema = {
     "name": "get_available_slots",
-    "description": "Retrieve 3 available one-hour slots from Google Calendar for appointment scheduling",
+    "description": "Retrieve 3 available one-hour slots in Google Calendar.",
     "parameters": {
         "type": "object",
         "properties": {
