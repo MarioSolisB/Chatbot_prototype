@@ -110,7 +110,11 @@ class ChatBot:
 
             function_response = handler(**function_args)
             # --- Log control of function response ----
-            print(f"Function response: {function_response}")
+            print(f"""
+************************* LOGS CALLING FUNCTION ***************************************
+>>>>> Calling function: {function_response}
+***************************************************************************************
+""")
             
             tool_response = {
                 "tool_call_id": tool_call.id,
@@ -120,11 +124,11 @@ class ChatBot:
             }
             
             messages.append(tool_response)
-#             print(f"""
-# ************************* LOGS MESSAGES ***********************************************
-# >>>> Adding to messages: {json.dumps(messages, indent=2)}
-# ***************************************************************************************
-# """)
+            print(f"""
+************************* LOGS MESSAGES ***********************************************
+>>>> Adding to messages: {json.dumps(messages, indent=2)}
+***************************************************************************************
+""")
 
         function_enriched_response = self.client.chat.completions.create(model=self.gpt_model, messages=messages)
 
@@ -149,6 +153,12 @@ class ChatBot:
             "content":assistant_message,
             }
             messages.append(assistant_message)
+            # Control log of messages
+            print(f"""
+************************* LOGS MESSAGES ***********************************************
+>>>> Adding to messages: {json.dumps(messages, indent=2)}
+***************************************************************************************
+""")
 
             return messages, assistant_message, tool_calls_action, tool_calls
         else:
@@ -158,5 +168,11 @@ class ChatBot:
             "content":assistant_message_enriched,
             }
             messages.append(assistant_message)
+            # Control log of messages
+            print(f"""
+************************* LOGS MESSAGES ***********************************************
+>>>> Adding to messages: {json.dumps(messages, indent=2)}
+***************************************************************************************
+""")
 
             return messages, assistant_message, tool_calls_action_enriched, tool_calls_enriched
