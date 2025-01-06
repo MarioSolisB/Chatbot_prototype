@@ -7,7 +7,7 @@ A Telegram real estate chatbot that manages calendar bookings and appointments u
 - Calendar event booking through Telegram
 - Integration with Google Calendar
 - Available time slots checking
-- Timezone handling (Default: America/Argentina/Buenos_Aires)
+- Timezone handling
 
 ## Project Structure
 
