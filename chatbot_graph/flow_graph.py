@@ -16,7 +16,7 @@ guideline="
 \n
 ***Welcome to NEXUS Residences!***
 We're very happy that you're considering us for your next home.
-📍 We are located at Franklin 2190. View on [Google Maps](https://www.google.com/maps/place/data=!4m2!3m1!1s0x95bcc9f5daff5059:0x3b9fe62852bb9341?entry=s&sa=X&ved=1t:8290&hl=es-ar&ictx=111) .
+📍 We are located at Madison Square Garden. View on [Google Maps](https://www.google.com/maps/place/Madison+Square+Garden/@40.7505045,-73.9960136,17z/data=!3m2!4b1!5s0x89c259ae41cf2763:0xb22ccd0fbe81e8b0!4m6!3m5!1s0x89c25a21fb011c85:0x33df10e49762f8e4!8m2!3d40.7505045!4d-73.9934387!16zL20vMGpfNjY?entry=ttu&g_ep=EgoyMDI0MTIxMS4wIKXMDSoASAFQAw%3D%3D) .
 '''
 "
 )
