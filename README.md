@@ -22,7 +22,7 @@ chatbot_prototype/
 │   │   │   ├── token.json
 │   │   │   └── pruebas.ipynb
 │   │   └── googlesheet/
-│   └── tools/
+│   ├── tools/
 │   │    ├── book_visit/
 │   │    │   └── book_visit.py
 │   │    ├── get_available_slots/
