@@ -37,8 +37,6 @@ guideline="
 - Greet kindly and introduce NEXUS Residences.
 Case 3: Lead mentions specific preference from Property Website or Market Website or Instagram.
 - Example: '''
-***[IN CRM: Changing status from non-contacted to contacted]***
-\n
 ***Welcome to NEXUS Residences!***
 Could you tell me your name? Besides the apartment you're inquiring about, would you like to see other [number of rooms mentioned by lead] room apartment options available?
 '''
@@ -195,24 +193,6 @@ Ready! I've reserved for [Time Chosen by Lead]
 "
 )
 
-G.add_node("reschedule_visit", 
-guideline="
-- You'll assist the lead in rescheduling their visit.
-- Example: '''
-Great! Here are some options for you to choose the one that works best for you
-\n
-Available times are:
-* Monday (date)) at (time)
-* Tuesday (date) at (time)
-
-'''
-- Then, after they mention the date, you'll respond with something like:
-'''
-Thank you, [Lead Name]! I've sent you an email with all the apartment visit details. If you have any other questions before the appointment, don't hesitate to write to me.
-See you on [Date lead rescheduled]!
-'''
-"
-)
 
 G.add_node("goodbye", 
 guideline="
@@ -229,33 +209,6 @@ See you on [Date scheduled by lead]!
 G.add_node("goodbye_2", 
 guideline="
 - Say goodbye kindly and remind them that you'll always be available to assist with any questions.
-"
-)
-
-G.add_node("visited_unit", 
-guideline="
-- You'll receive a message similar to: 'seller loads that lead attended'
-- Thank the lead mentioning their name and the day they visited (which is the day they scheduled before).
-- Also tell them that you sent all the information and tour details to their email.
-- Example:
-'''
-Thank you, [Lead Name] for your visit to ***NEXUS Residences***! 
-I sent to your email all the information about the units you toured during your visit.
-If you have any other questions, don't hesitate to write to me.
-Have a great day!
-'''
-"
-)
-
-G.add_node("did_not_visit_unit", 
-guideline="
-- You'll receive a message similar to: 'seller loads that lead did not attend'
-- Mention the option to reschedule a visit or refer them to an advisor.
-- Example:
-'''
-Hello, [Lead Name]! We noticed you couldn't attend your visit.
-Would you like to reschedule it or talk to an advisor?
-'''
 "
 )
 
@@ -308,18 +261,6 @@ G.add_edge("resolve_doubts", "refer_advisor", condition="In case the client has 
 G.add_edge("offer_visit", "confirm_visit", condition="Client agrees to visit the property.", expects_response="Yes")
 
 G.add_edge("confirm_visit", "goodbye", condition="User does NOT want to know more information.", expects_response="Yes")
-
-G.add_edge("goodbye", "visited_unit", condition="seller loads that lead attended", expects_response="Yes")
-
-G.add_edge("goodbye", "did_not_visit_unit", condition="seller loads that lead did not attend", expects_response="Yes")
-
-G.add_edge("goodbye", "reschedule_visit", condition="lead wants to reschedule visit", expects_response="Yes")
-
-G.add_edge("did_not_visit_unit", "reschedule_visit", condition="lead wants to reschedule visit", expects_response="Yes")
-
-G.add_edge("did_not_visit_unit", "refer_advisor", condition="lead wants to talk to an advisor", expects_response="Yes")
-
-G.add_edge("reschedule_visit", "goodbye_2", condition="lead says goodbye.", expects_response="Yes")
 
 G.add_edge("refer_advisor", "goodbye_2", condition="lead says goodbye.", expects_response="Yes")
 
