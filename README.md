@@ -23,16 +23,16 @@ chatbot_prototype/
 │   │   │   └── pruebas.ipynb
 │   │   └── googlesheet/
 │   └── tools/
-│   |    ├── book_visit/
-│   |    │   ├── book_visit.py
-│   |    ├── get_available_slots/
-|   |    |   |── get_available_slots
-│   |    ├── tools.py
-│   |── chatbot_handler.py
+│   │    ├── book_visit/
+│   │    │   └── book_visit.py
+│   │    ├── get_available_slots/
+│   │    |   └── get_available_slots
+│   │    └── tools.py
+│   ├── chatbot_handler.py
 │   ├── flow_graph.py
-│   |── prompt.py
+│   └── prompt.py
 ├── interface/
-|   |── telegram_app.py
+│   └── telegram_app.py
 ```
 
 ## Requirements
